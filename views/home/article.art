@@ -1,0 +1,129 @@
+{{extend './common/htmlFrame.art'}}
+
+{{block 'title'}}
+	<title>文章详情</title>
+{{/block}}
+
+{{block 'link'}}
+	<link rel="stylesheet" href="/home/css/article.css">
+	<style>
+		textarea {
+			resize: none;
+		}
+		#comment {
+			width: 100px;
+			height: 26px;
+			cursor: pointer;
+		}
+		.page {
+			padding: 30px 0;
+			font-size: 0;
+			// text-align: center;
+		}
+		.page a {
+			display: inline-block;
+			font-size: 14px;
+			margin: 0 8px;
+		}
+		a {
+			text-decoration: none;
+			color: #000;
+			transition: all 0.2s;
+		}
+		.page .active {
+			color: #ff7300;
+		}
+	</style>	
+{{/block}}
+
+{{block 'main'}}
+	{{include './common/pageHead.art'}}
+	<!-- 文章框架开始 -->
+	<div class="article">
+		<div class="w1100">
+			<div class="container">
+				<div class="article-header">
+					<h3 class="article-title">{{article.title}}</h3>
+					<div class="article-info">
+						<span class="author">{{article.author.username}}</span>
+						<span>{{dateformat(article.publishDate, 'yyyy-mm-dd')}}</span>
+					</div>
+				</div>
+				<div class="article-content">
+					{{@article.content}}
+				</div>
+				<div class="article-comment">
+					<h4>评论</h4>
+					<%
+						if(userInfo) {
+					%>
+						<form class="comment-form" action="/home/comment" method="post">
+							<textarea class="comment" name="content" id="content"></textarea>
+							<input type="hidden" name="userid" value="{{@userInfo._id}}">
+							<input type="hidden" name="articleid" value="{{@article._id}}">
+							<div class="items">
+								<input type="submit" value="发表" id="comment">
+							</div>
+						</form>
+					<% } else { %>
+						<p>请先登录再进行评论</p>
+					<% } %>
+					
+					<div class="comment-list">
+						{{each comments.records}}
+							<div class="mb10">
+								<div class="article-info">
+									<span class="author">{{$value.user.username}}</span>
+									<span>{{dateformat($value.commentDate, 'yyyy-mm-dd')}}</span>
+									<span>{{$value.user.email}}</span>
+								</div>
+								<div class="comment-content">
+									{{$value.content}}
+								</div>
+							</div>
+						{{/each}}
+						<!-- 分页开始 -->
+						<div class="page w1100">
+							<%
+								if(comments.page <= 1) {
+							%>
+								<a href="javascript: ;">上一页</a>
+							<% } else { %>
+								<a href="/home/article?page={{comments.page - 1}}&id={{@article._id}}">上一页</a>
+							<% } %>
+							{{each comments.display}}
+								<a href="/home/article?page={{$value}}&id={{@article._id}}" class="{{$value == comments.page ? 'active' : ''}}">{{$value}}</a>
+							{{/each}}
+							<%
+								if(comments.page >= comments.pages) {
+							%>
+								<a href="javascript: ;">下一页</a>
+							<% } else { %>
+								<a href="/home/article?page={{comments.page - 0 + 1}}&id={{@article._id}}">下一页</a>
+							<% } %>
+						</div>
+						<!-- 分页结束 -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- 文章框架结束 -->
+{{/block}}
+
+{{block 'script'}}
+	<script>
+		$('#comment').on('click', function() {
+			let content = $('#content').val().trim();
+			//验证评论内容是否为空，若为空则阻止提交
+			if(content && content.length > 0) {
+				// 评论不为空，允许提交
+				$(this).prop('type', 'submit');
+			} else {
+				$(this).prop('type', 'button');
+				alert('评论内容不能为空！');
+			}
+
+		});	
+	</script>
+{{/block}}

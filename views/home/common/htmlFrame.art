@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- 标题插槽 -->
+    {{block 'title'}}{{/block}}
+    <link rel="stylesheet" href="/home/css/base.css">
+    <!-- css 引入插槽 -->
+    {{block 'link'}}{{/block}}
+</head>
+
+<body>
+    <!-- 内容区域插槽 -->
+    {{block 'main'}}{{/block}}
+    
+    <!-- script插槽 -->
+    <script src="/admin/lib/jquery/dist/jquery.min.js"></script>
+    {{block 'script'}}{{/block}}
+</body>
+
+</html>

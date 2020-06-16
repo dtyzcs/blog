@@ -1,0 +1,11 @@
+{{extend './common/htmlFrame.art'}}
+
+{{block 'title'}}
+    <title>错误提示</title>
+{{/block}}
+
+{{block 'main'}}
+    <div class="container">
+        <h1 class="bg-danger text-danger page-header">{{message}}</h1>
+    </div>
+{{/block}}

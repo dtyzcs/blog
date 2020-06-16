@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- 标题插槽 -->
+    {{block 'title'}}{{/block}}
+    <link rel="stylesheet" href="/admin/lib/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/admin/css/base.css">
+    <!-- css 引入插槽 -->
+    {{block 'link'}}{{/block}}
+</head>
+
+<body>
+    <!-- 内容区域插槽 -->
+    {{block 'main'}}{{/block}}
+    <script src="/admin/lib/jquery/dist/jquery.min.js"></script>
+    <script src="/admin/lib/bootstrap/js/bootstrap.min.js"></script>
+    <!-- script插槽 -->
+    {{block 'script'}}{{/block}}
+</body>
+
+</html>
